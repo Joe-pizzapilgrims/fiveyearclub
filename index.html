@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#f3a7df">
+<title>Five Year Club Awards</title>
+<style>
+@font-face{font-family:Pilgrims;src:url('PizzaPilgrims.otf') format('opentype');font-display:swap}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4a9df url('background.png') center top/cover fixed no-repeat;color:#111;font-family:Arial,sans-serif;min-height:100vh}.wrap{width:min(760px,92%);margin:auto;padding:34px 0 70px}.hero{text-align:center}.logo{width:min(520px,92%);height:auto;filter:drop-shadow(0 8px 0 rgba(0,0,0,.12))}.intro{font-family:Pilgrims,Arial,sans-serif;font-size:clamp(20px,4vw,28px);line-height:1.05;max-width:620px;margin:16px auto 30px}.card{background:#fff;border:4px solid #111;border-radius:18px;padding:22px;margin:18px 0;box-shadow:8px 8px 0 #111}.num{display:inline-grid;place-items:center;width:38px;height:38px;border:3px solid #111;border-radius:50%;font-family:Pilgrims,Arial,sans-serif;font-size:24px;background:#d8f230;margin-bottom:12px}.card:nth-child(4n+2) .num{background:#ff6b18}.card:nth-child(4n+3) .num{background:#58d6e8}.card:nth-child(4n+4) .num{background:#e8a5e6}.question{font-family:Pilgrims,Arial,sans-serif;font-size:clamp(23px,4.5vw,31px);line-height:1;margin:0 0 16px}select{width:100%;font-size:17px;padding:14px 42px 14px 14px;border:3px solid #111;border-radius:10px;background:#fff;color:#111;cursor:pointer}select:focus{outline:4px solid #d8f230;outline-offset:2px}.submit{display:block;width:100%;margin-top:28px;padding:18px;border:4px solid #111;border-radius:14px;background:#d8f230;color:#111;font-family:Pilgrims,Arial,sans-serif;font-size:32px;cursor:pointer;box-shadow:7px 7px 0 #111;transition:.12s}.submit:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 #111}.submit:active{transform:translate(5px,5px);box-shadow:2px 2px 0 #111}.error{display:none;background:#fff3a8;border:3px solid #111;border-radius:10px;padding:12px;margin-top:18px;font-weight:700;text-align:center}.success{display:none;text-align:center}.success h1{font-family:Pilgrims,Arial,sans-serif;font-size:clamp(42px,9vw,72px);line-height:.9;margin:18px 0 10px}.success p{font-family:Pilgrims,Arial,sans-serif;font-size:25px}.invite{display:block;width:min(620px,100%);height:auto;margin:24px auto;border:4px solid #111;box-shadow:10px 10px 0 #111}.small{font-size:13px;text-align:center;margin-top:18px;font-weight:700}@media(max-width:520px){.wrap{width:94%;padding-top:20px}.card{padding:17px;box-shadow:5px 5px 0 #111}.question{font-size:24px}.intro{font-size:21px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section id="voting">
+<div class="hero"><img class="logo" src="fylogo.png" alt="Pizza Pilgrims Five Year Club"><p class="intro">THE FIVE YEAR CLUB AWARDS. Pick the Pilgrim who deserves each title — choose wisely!</p></div>
+<form id="voteForm">
+<div id="questions"></div>
+<div id="error" class="error">Please choose someone for all 10 awards before submitting.</div>
+<button class="submit" type="submit">SUBMIT MY VOTES!</button>
+</form>
+<p class="small">One choice per award. Your votes will be sent when you hit submit.</p>
+</section>
+<section id="success" class="success"><img class="logo" src="fylogo.png" alt="Five Year Club"><h1>VOTES ARE IN!</h1><p>Thanks for voting. Now for the important bit…</p><img class="invite" src="invite.png" alt="Five Year Club event invitation"></section>
+</main>
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none"></iframe>
+<script>
+const questions=[
+['Most likely to put pineapple on pizza','765588237'],
+['Most likely to go home last at Ferragosto','640385119'],
+['Most likely to quote the values in a casual conversation.','843145923'],
+['Most likely to attend every academy workshop!','1354392883'],
+['Most likely to become an operations director one day.','1618962232'],
+['Most likely to break a world record','1378468687'],
+['Most likely to know every pizza special from memory.','533910705'],
+['Most likely to transfer to Pizza Pilgrims Las Vegas','890585751'],
+['Most likely to persuade everyone to go for “just a pint” after work.','465209871'],
+['Most likely to survive a zombie apocalypse using only a pizza peel.','563350936']
+];
+const names=['Tom Mullin','Davide Riccio','Leanne Gunson','Kathy Garrill','Bledi Jahjiga','Shaw Morgan','Antimo Buonacore','Aleksandra Kmiec','Kazimieras Prokopovicius','Maria Persia','Simon Nicolay Bogdan','Mark Ade-Onojobi','Alison Miller','Giulia De Nittis','Matt Lee','Elena Gentili','Elsa Gkietsi','Krassimira Kirilova','Domenico Luongo','Alexandru Ilascu','Cesare luca Della Corte','Luigi Azzarone','Alessandro Romanelli','Antonio Rafael Di Meo','Daniela-Diana Obis','Joe RB','Antonino Ventrice','Giuseppe Magri','Tobi Oduneye','Giada Marcione','Laura Buckingham','Martina Tomassini','Sophie Gilchrist','Hayley Whitfield','Thom Elliot','James Elliot','Sara Silvestri','Alessandro Vargiu','Gavin Smith','Nikolay Topchiyski','Lucia Mccormack','Rahman Mogibur','Piero Ligorio','Giuseppe Di Gioia','Natalia Vorniceanu'];
+const box=document.getElementById('questions');
+questions.forEach((q,i)=>{const card=document.createElement('div');card.className='card';const opts=names.map(n=>`<option value="${n}">${n}</option>`).join('');card.innerHTML=`<span class="num">${i+1}</span><h2 class="question">${q[0]}</h2><select name="entry.${q[1]}" required aria-label="${q[0].replace(/"/g,'&quot;')}"><option value="" selected disabled>Choose a name…</option>${opts}</select>`;box.appendChild(card)});
+const form=document.getElementById('voteForm');
+form.addEventListener('submit',e=>{e.preventDefault();const selects=[...form.querySelectorAll('select')];if(selects.some(s=>!s.value)){document.getElementById('error').style.display='block';selects.find(s=>!s.value)?.focus();return}document.getElementById('error').style.display='none';const google=document.createElement('form');google.action='https://docs.google.com/forms/d/e/1FAIpQLSfJQDfrikscTpBMeFv7SU-l8EYwztUFLBGQ5W1oKxMqV1zqWA/formResponse';google.method='POST';google.target='hidden_iframe';google.style.display='none';selects.forEach(s=>{const input=document.createElement('input');input.name=s.name;input.value=s.value;google.appendChild(input)});document.body.appendChild(google);google.submit();document.getElementById('voting').style.display='none';document.getElementById('success').style.display='block';window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>google.remove(),3000)});
+</script>
+</body>
+</html>
